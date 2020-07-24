@@ -1,0 +1,2 @@
+model_checkpoint_path: "mnist-model-10000"
+all_model_checkpoint_paths: "mnist-model-10000"
