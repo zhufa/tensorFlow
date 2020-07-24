@@ -31,15 +31,14 @@ with tf.Session() as sess:
     print ("------------------------------------------------------")
     '''
 
-    b=np.loadtxt("test/txt/66.txt")
-    x = b.reshape([1,784])
+    b = np.loadtxt("test/txt/66.txt")
+    x = b.reshape([1, 784])
 
-
-    feed_dict = {"input_x:0":x,"keep_prob:0":1.0}
+    feed_dict = {"input_x:0": x, "keep_prob:0": 1.0}
 
     y_ = graph.get_tensor_by_name("Softmax:0")
 
     yy = sess.run(y_, feed_dict)  # 将Y转为one-hot类型
-    print ('yy:',yy)
+    print ('yy:', yy)
     print ("the answer is: ", sess.run(tf.argmax(yy, 1)[0]))
     print ("------------------------------------------------------")

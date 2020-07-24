@@ -40,6 +40,7 @@ def conv2d(x, W):
 def max_pool_2x2(x):
     return tf.nn.max_pool(x, [1, 2, 2, 1], [1, 2, 2, 1], padding='SAME')
 
+
 # 第一层:卷积+池化
 W_conv1 = weight_variable([5, 5, 1, 32], "W_conv1")  # 5×5的卷积核，出入为1通道的图，输出为32，即32个卷积核
 b_conv1 = bias_variable([32], "b_conv1")
@@ -57,10 +58,10 @@ h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)  # 卷积后的图像�
 h_pool2 = max_pool_2x2(h_conv2)  # 池化后的图像尺寸为7×7
 
 # 密集连接层：1024个神经元（全连接）
-W_fc1 = weight_variable([7*7*64, 1024], "W_fc1")
+W_fc1 = weight_variable([7 * 7 * 64, 1024], "W_fc1")
 b_fc1 = bias_variable([1024], "b_fc1")
 
-reshaped_h_pool2 = tf.reshape(h_pool2, [-1, 7*7*64])
+reshaped_h_pool2 = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
 h_fc1 = tf.nn.relu(tf.matmul(reshaped_h_pool2, W_fc1) + b_fc1)
 
 # dropout
@@ -74,7 +75,7 @@ y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 
 # 损失函数及训练模型
 y_ = tf.placeholder(tf.float32, [None, 10])
-cross_entropy = -tf.reduce_sum(y_*tf.log(y_conv))
+cross_entropy = -tf.reduce_sum(y_ * tf.log(y_conv))
 train = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
 # 准备训练，初始化所有变量
@@ -92,13 +93,13 @@ m_saver = tf.train.Saver()
 for i in range(10000):
     batch_xs, batch_ys = mnist.train.next_batch(100)
     if i % 100 == 0:
-        step_accuracy = accuracy.eval(session=sess, feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})
+        step_accuracy = accuracy.eval(session=sess,
+                                      feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})
         print "step %d test accuracy: %g" % (i, step_accuracy)
     sess.run(train, feed_dict={x: batch_xs, y_: batch_ys, keep_prob: 0.5})
 
 # 保存模型参数，如何加载模型并使用参见 mnist_test.py
 # m_saver.save(sess, "model/mnist-model", global_step=10000)
 
-print "test accuracy: %g" % accuracy.eval(session=sess, feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})
-
-
+print "test accuracy: %g" % accuracy.eval(session=sess,
+                                          feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0})

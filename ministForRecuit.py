@@ -32,7 +32,7 @@ y = tf.nn.softmax(tf.matmul(x, W) + b)
 # 计算交叉熵 参考为啥交叉熵可以作为损失函数：https://blog.csdn.net/tsyccnh/article/details/79163834#t7
 # 训练过程中使用了占位符，当feed_dict一次传进来100张时，损失函数是100张总的交叉商的和
 y_ = tf.placeholder("float", shape=(None, 10))
-cross_entropy = -tf.reduce_sum(y_*tf.log(y))
+cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
 # 优化
 train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
 
@@ -67,4 +67,4 @@ dot = np.dot(X, WW)
 result = dot + sess.run(b)
 Y = tf.nn.softmax(result)
 print sess.run(Y)
-#print sess.run(tf.nn.softmax(b)), sess.run(b), sess.run(b + W)
+# print sess.run(tf.nn.softmax(b)), sess.run(b), sess.run(b + W)
